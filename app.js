@@ -2,15 +2,87 @@ const fs = require("fs");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const express = require("express");
+const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 const port = 3000;
+
+// Connect to the SQLite database
+const db = new sqlite3.Database("database.db");
+
+// Create the 'users' table if it doesn't exist
+db.run(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT UNIQUE,
+    password TEXT
+  )
+`);
+
+// Serve the static files from the 'public' folder
+app.use(express.static("public"));
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: false }));
+
+// Register Route
+app.get("/", (req, res) => {
+	res.sendFile(__dirname + "/public/register.html");
+});
+
+// Login Route
+app.get("/login", (req, res) => {
+	res.sendFile(__dirname + "/public/login.html");
+});
+
+// Handle the registration form submission
+app.post("/register", (req, res) => {
+	const { name, email, password } = req.body;
+
+	// Insert the user data into the 'users' table
+	db.run(
+		"INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+		[name, email, password],
+		(err) => {
+			if (err) {
+				// Handle any database error
+				res.send("Error occurred during registration.");
+			} else {
+				res.redirect("/login");
+			}
+		}
+	);
+});
+
+// Handle the login form submission
+app.post("/login", (req, res) => {
+	const { email, password } = req.body;
+
+	// Check if the user exists in the database
+	db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) => {
+		if (err) {
+			// Handle any database error
+			res.send("Error occurred during login.");
+		} else if (!row) {
+			// User not found
+			res.send("User not found.");
+		} else if (row.password !== password) {
+			// Incorrect password
+			res.send("Invalid email or password.");
+		} else {
+			// Set loggedIn property in the session to indicate successful login
+			res.redirect("/home");
+		}
+	});
+});
 
 const baseURLs = {
 	theguardian: "https://www.theguardian.com",
 	theindependent: "https://www.independent.co.uk",
 };
 
+//Home Route
 app.get("/home", (req, res) => {
 	const homeHTML = fs.readFileSync("public/home.html", "utf8");
 	res.send(homeHTML);
