@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Web Scraper</title>
+</head>
+
+<body>
+    <div class="flex flex-col items-center justify-center h-screen">
+        <h1 class="text-3xl font-bold">Welcome to Web Scraper</h1>
+        <div class="mt-4">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                onclick="scrape('theguardian')">The Guardian</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                onclick="scrape('theindependent')">The Independent</button>
+        </div>
+    </div>
+    <script>
+        function scrape(website) {
+            fetch('/scrape?website=' + website)
+                .then(response => response.text())
+                .then(message => alert(message))
+                .catch(error => console.error(error));
+        }
+    </script>
+</body>
+
+</html>
