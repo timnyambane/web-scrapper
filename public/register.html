@@ -5,20 +5,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <title>Register</title>
 </head>
 
 <body>
-    <h1>Register</h1>
-    <form action="/register" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Register">
-    </form>
+
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
+            <h3 class="text-2xl font-bold text-center">Create your account</h3>
+            <form action="/register" method="POST">
+                <div class="mt-4">
+                    <div class="mt-2">
+                        <label class="block" for="name">Username<label>
+                                <input type="text" name="name" placeholder="Username" required
+                                    class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    </div>
+                    <div class="mt-4">
+                        <label for="email" class="block" for="email">Email<label>
+                                <input type="email" id="email" name="email" placeholder="E-mail" required
+                                    class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    </div>
+                    <div class="mt-4">
+                        <label for="password" class="block">Password<label>
+                                <input type="password" id="password" name="password" placeholder="Password" required
+                                    class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    </div>
+                    <div class="flex items-baseline justify-between">
+                        <input type="submit" value="Register"
+                            class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">
+                        <a href="/" class="text-sm text-blue-600 hover:underline">Login</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 
 </html>

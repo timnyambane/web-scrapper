@@ -27,12 +27,12 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
 // Register Route
-app.get("/", (req, res) => {
+app.get("/register", (req, res) => {
 	res.sendFile(__dirname + "/public/register.html");
 });
 
 // Login Route
-app.get("/login", (req, res) => {
+app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/public/login.html");
 });
 
@@ -49,7 +49,7 @@ app.post("/register", (req, res) => {
 				// Handle any database error
 				res.send("Error occurred during registration.");
 			} else {
-				res.redirect("/login");
+				res.redirect("/");
 			}
 		}
 	);
